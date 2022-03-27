@@ -6,7 +6,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	PSTR lpCmdLine, int nCmdShow) {
 	if(shouldClose()){
-		MessageBox(NULL, "GetComputerName", "Get Computer Name is already running!", MB_OK | MB_ICONSTOP | MB_SETFOREGROUND);
+		MessageBoxA(NULL, "GetComputerName", "Get Computer Name is already running!", MB_OK | MB_ICONSTOP | MB_SETFOREGROUND);
 		return;
 	}
 	UNREFERENCED_PARAMETER(hPrevInstance);
