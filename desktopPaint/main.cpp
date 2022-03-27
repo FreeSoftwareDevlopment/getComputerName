@@ -1,10 +1,14 @@
 #include <Windows.h>
 
-
+bool shouldClose();
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 #define bgcolor RGB(0x17, 0x17, 0x17)
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	PSTR lpCmdLine, int nCmdShow) {
+	if(shouldClose()){
+		MessageBox(NULL, "GetComputerName", "Get Computer Name is already running!", MB_OK | MB_ICONSTOP | MB_SETFOREGROUND);
+		return;
+	}
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
@@ -56,7 +60,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		unsigned long s = 16;
 		wchar_t hostname[16 + 1];
-		int returns = GetComputerNameW(&hostname[0], &s);
+		GetComputerNameW(&hostname[0], &s);
 #define beginat 7
 #define wbeg  7
 #define width 9
@@ -100,3 +104,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
+bool shouldClose() {
+	//Make sure at most one instance of the tool is running
+	HANDLE hMutexOneInstance(::CreateMutexA(NULL, TRUE, "{a1097153-3429-4248-931d-8560cb14aef8}"));
+	bool bAlreadyRunning((::GetLastError() == ERROR_ALREADY_EXISTS));
+	if (hMutexOneInstance == NULL || bAlreadyRunning)
+	{
+		if (hMutexOneInstance)
+		{
+			::ReleaseMutex(hMutexOneInstance);
+			::CloseHandle(hMutexOneInstance);
+		}
+		return true;
+	}
+	return false;
+}
