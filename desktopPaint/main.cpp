@@ -7,7 +7,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	PSTR lpCmdLine, int nCmdShow) {
 	if(shouldClose()){
 		MessageBoxA(NULL, "GetComputerName", "Get Computer Name is already running!", MB_OK | MB_ICONSTOP | MB_SETFOREGROUND);
-		return;
+		return 1;
 	}
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
